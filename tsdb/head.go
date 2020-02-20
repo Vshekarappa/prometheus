@@ -1604,7 +1604,7 @@ func (s *stripeSeries) gc(mint int64) (map[uint64]struct{}, int) {
 			for _, series := range all {
 				series.Lock()
 				rmChunks += series.truncateChunksBefore(mint)
-				series.cleanupExtraWriteIds()
+				// series.cleanupExtraWriteIds()
 
 				if len(series.chunks) > 0 || series.pendingCommit {
 					series.Unlock()
@@ -1870,13 +1870,13 @@ func (s *memSeries) cleanupWriteIDsBelow(bound uint64) {
 	s.txs.cleanupWriteIDsBelow(bound)
 }
 
-func (s *memSeries) cleanupExtraWriteIds() {
-	totalSamples := 0
-	for _, c := range s.chunks {
-		totalSamples += c.chunk.NumSamples()
-	}
-	s.txs.cutoffN(totalSamples)
-}
+// func (s *memSeries) cleanupExtraWriteIds() {
+// 	totalSamples := 0
+// 	for _, c := range s.chunks {
+// 		totalSamples += c.chunk.NumSamples()
+// 	}
+// 	s.txs.cutoffN(totalSamples)
+// }
 
 // computeChunkEndTime estimates the end timestamp based the beginning of a chunk,
 // its current timestamp and the upper bound up to which we insert data.
